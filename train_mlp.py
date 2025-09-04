@@ -41,7 +41,7 @@ def plot_results(y_true, y_pred, title):
     plt.show()
 
 # 加载增强后的数据集
-enhanced_data = pd.read_excel("processed_data.xlsx", engine='openpyxl')
+enhanced_data = pd.read_excel("processed_data1.xlsx", engine='openpyxl')
 
 # 分离特征和输出
 X = enhanced_data.iloc[:, :-1].values
@@ -59,9 +59,14 @@ X_cleaned = cleaned_df.iloc[:, :-1].values
 y_cleaned = cleaned_df.iloc[:, -1].values
 
 # 使用原始数据进行划分
-X_train, X_temp, y_train, y_temp = train_test_split(X_cleaned, y_cleaned, test_size=0.2, random_state=9)
-X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=8)
-
+#X_train, X_temp, y_train, y_temp = train_test_split(X_cleaned, y_cleaned, test_size=0.2, random_state=8)
+#X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=9)
+#40,20为岩浆岩最高的
+#X_train, X_temp, y_train, y_temp = train_test_split(X_cleaned, y_cleaned, test_size=0.2, random_state=40)
+#X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=20)
+#20，22岩浆正常
+X_train, X_temp, y_train, y_temp = train_test_split(X_cleaned, y_cleaned, test_size=0.2, random_state=20)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=22)
 # 使用标准化
 scaler_X = StandardScaler()
 X_train = scaler_X.fit_transform(X_train)
@@ -113,6 +118,7 @@ val_errors = np.abs(y_val - y_val_pred)
 test_errors = np.abs(y_test - y_test_pred)
 
 # 定义一个误差阈值，选择误差大于阈值的数据作为异常值
+# 其他换75阈值
 threshold = np.percentile(train_errors, 75)  # 95% 分位数作为阈值
 
 # 找出误差大于阈值的样本
